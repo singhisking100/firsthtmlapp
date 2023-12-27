@@ -17,7 +17,7 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
-          username: ${{ github.repository_owner }}
+          username: ${{ github.actor }}
           password: ${{ secrets.PAC_GITHUB_TOKEN }}
 
       - name: Build and Push Docker Image
@@ -38,7 +38,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Run Dastardly Scan
-        run: docker run ghcr.io/${{ github.repository_owner }}/my-html-app:latest
+        run: |
+          docker pull ghcr.io/${{ github.repository_owner }}/my-html-app:latest
+          docker run ghcr.io/${{ github.repository_owner }}/my-html-app:latest
         env:
-          BURP_START_URL: http://localhost:55555
+          BURP_START_URL: http://localhost:55555  # Adjust the URL based on your setup
           BURP_REPORT_FILE_PATH: /github/workspace/dastardly-report.xml
