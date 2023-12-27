@@ -13,24 +13,19 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v2
 
-    - name: Build and Deploy
+    - name: Build and Push Docker image
       run: |
-        # Build HTML application (replace this with your actual build command)
-        echo "<html><body><h1>Hello, GitHub Actions!</h1></body></html>" > index.html
+        echo "<html><body><h1>Hi,This my first application </h1></body></html>" > index.html
 
-        # Build Docker image
+        # Build and push Docker image
         docker build -t ${{ github.repository_owner }}/my-html-app .
+        docker tag ${{ github.repository_owner }}/my-html-app ghcr.io/${{ github.repository_owner }}/my-html-app:latest
+        docker tag ${{ github.repository_owner }}/my-html-app ${{ secrets.DOCKERHUB_USERNAME }}/my-html-app:latest
 
         # Login to GitHub Container Registry (GHCR)
-        echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
-
-        # Push image to GHCR
-        docker tag ${{ github.repository_owner }}/my-html-app ghcr.io/${{ github.repository_owner }}/my-html-app:latest
+        echo "${{ secrets.PAC_GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.repository_owner }} --password-stdin
         docker push ghcr.io/${{ github.repository_owner }}/my-html-app:latest
 
         # Login to Docker Hub
         echo "${{ secrets.DOCKERHUB_USERNAME }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-
-        # Push image to Docker Hub
-        docker tag ${{ github.repository_owner }}/my-html-app ${{ secrets.DOCKERHUB_USERNAME }}/my-html-app:latest
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/my-html-app:latest
