@@ -1,4 +1,4 @@
-name: Build and Deploy
+name: Build, Deploy, and Scan
 
 on:
   push:
@@ -17,7 +17,7 @@ jobs:
         uses: docker/login-action@v1
         with:
           registry: ghcr.io
-          username: ${{ github.actor }}
+          username: ${{ github.repository_owner }}
           password: ${{ secrets.PAC_GITHUB_TOKEN }}
 
       - name: Build and Push Docker Image
@@ -37,21 +37,8 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v1
-        with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.PAC_GITHUB_TOKEN }}
-
-      - name: Pull Docker Image for Dastardly Scan
-        run: docker pull ghcr.io/${{ github.repository_owner }}/my-html-app:latest
+      - name: Pull Dastardly Docker Image
+        run: docker pull portswigger/dastardly:latest
 
       - name: Run Dastardly Scan
-        run: docker run ghcr.io/${{ github.repository_owner }}/my-html-app:latest
-
-      - name: Archive Dastardly Scan Report
-        uses: actions/upload-artifact@v2
-        with:
-          name: dastardly-scan-report
-          path: /github/workflows/dastardly-report.xml
+        run: docker run -v ${{ github.workspace }}:/github/workspace portswigger/dastardly:latest --env BURP_START_URL=http://localhost:55555 --env BURP_REPORT_FILE_PATH=/github/workspace/dastardly-report.xml
