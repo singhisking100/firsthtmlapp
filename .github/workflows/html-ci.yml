@@ -39,6 +39,6 @@ jobs:
 
       - name: Run Dastardly Scan
         run: docker run ghcr.io/${{ github.repository_owner }}/my-html-app:latest
-          env:
-            BURP_START_URL: http://localhost:55555
-            BURP_REPORT_FILE_PATH: /github/workspace/dastardly-report.xml
+        env:
+          BURP_START_URL: http://localhost:55555
+          BURP_REPORT_FILE_PATH: /github/workspace/dastardly-report.xml
