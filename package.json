@@ -1,0 +1,12 @@
+// package.json
+{
+    "name": "my-html-app",
+    "version": "1.0.0",
+    "description": "A simple HTML application",
+    "scripts": {
+      "build": "echo 'No build script specified'"
+    },
+    "dependencies": {},
+    "devDependencies": {}
+  }
+  
