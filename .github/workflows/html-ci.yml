@@ -28,8 +28,7 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.repository_owner }}/my-html-app:latest
 
-
-   dastardly_scan:
+  dastardly_scan:
     runs-on: ubuntu-latest
 
     needs: build_and_deploy
