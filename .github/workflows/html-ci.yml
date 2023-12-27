@@ -49,3 +49,9 @@ jobs:
 
       - name: Run Dastardly Scan
         run: docker run ghcr.io/${{ github.repository_owner }}/my-html-app:latest
+
+      - name: Archive Dastardly Scan Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: dastardly-scan-report
+          path: /github/workflows/dastardly-report.xml
