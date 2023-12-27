@@ -39,7 +39,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Run Dastardly Scan
-        uses: docker://DastardlyImage  # Replace with the actual Docker image for Dastardly
+        uses: docker://ghcr.io/${{ github.repository_owner }}/my-html-app:latest  # Replace with the actual Docker image for Dastardly
         with:
           args: >
             --env BURP_START_URL=http://localhost:55555  # Adjust the URL based on your setup
