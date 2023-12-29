@@ -36,23 +36,23 @@ jobs:
           exit-code: 0  # Set to 1 to fail the workflow if vulnerabilities are found
           severity: CRITICAL  # Adjust severity level as needed
 
-  anchore_scan:
-    runs-on: ubuntu-latest
+  # anchore_scan:
+  #   runs-on: ubuntu-latest
 
-    needs: build_and_push
+  #   needs: build_and_push
 
-    steps:
-      - uses: anchore/scan-action@v3
-        id: scan
-        with:
-          image: "my-html-app:latest"
-          fail-build: true
-          severity-cutoff: critical
-          only-fixed: true
-          by-cve: true
+  #   steps:
+  #     - uses: anchore/scan-action@v3
+  #       id: scan
+  #       with:
+  #         image: "my-html-app:latest"
+  #         fail-build: true
+  #         severity-cutoff: critical
+  #         only-fixed: true
+  #         by-cve: true
 
-      - name: Inspect Anchore scan SARIF report
-        run: cat ${{ steps.scan.outputs.sarif }}
+  #     - name: Inspect Anchore scan SARIF report
+  #       run: cat ${{ steps.scan.outputs.sarif }}
 
 
 
@@ -67,7 +67,7 @@ jobs:
       
       - name: Log in to Docker Hub
         run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
-        
+
       - name: Checkout Repository
         uses: actions/checkout@v2
 
