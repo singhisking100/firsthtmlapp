@@ -29,15 +29,19 @@ jobs:
           docker build -t ghcr.io/${{ github.repository_owner }}/my-html-app:latest .
           docker push ghcr.io/${{ github.repository_owner }}/my-html-app:latest
 
-      - name: Set up Anchore CLI
-        uses: anchore/setup-anchore-cli@v2
-        with:
-          version: latest
+  anchore_scan:
+    runs-on: ubuntu-latest
 
-      - name: Analyze Docker Image with Anchore
-        run: |
-          anchore-cli image add ghcr.io/${{ github.repository_owner }}/my-html-app:latest
-          anchore-cli analyze ghcr.io/${{ github.repository_owner }}/my-html-app:latest
+    needs: build_and_push
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Anchore Container Image Scan
+        uses: anchore/container-scan-action@v1
+        with:
+          image-ref: ghcr.io/${{ github.repository_owner }}/my-html-app:latest
 
   dastardly_scan:
     runs-on: ubuntu-latest
