@@ -61,7 +61,7 @@ jobs:
   dastardly_scan:
     runs-on: ubuntu-latest
 
-    needs: anchore_scan
+    #needs: anchore_scan
     
 
     steps:
