@@ -52,9 +52,6 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Pull Dastardly Image
-        run: docker pull portswigger/dastardly:latest
-
       - name: Run Dastardly Scan
         run: |
           docker run -v $(pwd):/target portswigger/dastardly:latest --target http://localhost:12121 --report /target/dastardly-report.xml
