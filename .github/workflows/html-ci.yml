@@ -58,29 +58,51 @@ jobs:
 
 
 
-  dastardly_scan:
-    runs-on: ubuntu-latest
+  # dastardly_scan:
+  #   runs-on: ubuntu-latest
 
-    #needs: anchore_scan
+  #   #needs: anchore_scan
     
 
-    steps:
+  #   steps:
 
       
-      - name: Log in to Docker Hub
-        run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
+  #     - name: Log in to Docker Hub
+  #       run: docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_PASSWORD }}
 
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v2
 
-      - name: Run Dastardly Scan
-        run: |
-          set -x
-          docker run -v $(pwd):/target portswigger/dastardly:latest --target http://localhost:12121 --report /target/dastardly-report.xml
-          set +x
+  #     - name: Run Dastardly Scan
+  #       run: |
+  #         set -x
+  #         docker run -v $(pwd):/target portswigger/dastardly:latest --target http://localhost:12121 --report /target/dastardly-report.xml
+  #         set +x
 
-      - name: Upload Scan Report
-        uses: actions/upload-artifact@v2
-        with:
-          name: dastardly-report
-          path: dastardly-report.xml
+  #     - name: Upload Scan Report
+  #       uses: actions/upload-artifact@v2
+  #       with:
+  #         name: dastardly-report
+  #         path: dastardly-report.xml
+
+
+      - name: 'Dastardly Scan Action'
+          description: 'Runs a Dastardly scan against a target site'
+          author: 'PortSwigger'
+          inputs:
+            target-url:
+              description: 'The full url (including scheme) of the site to scan'
+              required: true
+            output-filename:
+              description: 'The filename used for the scan report. This filepath relates to the dastardly container, and will exist in the github workspace (/github/workspace)'
+              required: false
+              default: dastardly-report.xml
+          runs:
+            using: 'docker'
+            image: 'Dockerfile'
+            env:
+              BURP_START_URL: ${{ inputs.target-url }}
+              BURP_REPORT_FILE_PATH: /github/workspace/${{ inputs.output-filename }}
+          branding:
+            icon: 'activity'
+            color: 'green'
