@@ -85,17 +85,17 @@ jobs:
   #         name: dastardly-report
   #         path: dastardly-report.xml
 
- dastardly_scan:
-    runs-on: ubuntu-latest
+  dastardly_scan:
+      runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+      steps:
+        - name: Checkout Repository
+          uses: actions/checkout@v2
 
-      - name: Dastardly Scan Action
-        uses: ./Dockerfile
-          target-url: http://localhost:12121
-          output-filename: dastardly-report.xml
-        env:
-          BURP_START_URL: http://localhost:12121
-          BURP_REPORT_FILE_PATH: /github/workspace/dastardly-report.xml
+        - name: Dastardly Scan Action
+          uses: ./Dockerfile
+            target-url: http://localhost:12121
+            output-filename: dastardly-report.xml
+          env:
+            BURP_START_URL: http://localhost:12121
+            BURP_REPORT_FILE_PATH: /github/workspace/dastardly-report.xml
