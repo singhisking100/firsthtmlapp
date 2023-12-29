@@ -85,24 +85,17 @@ jobs:
   #         name: dastardly-report
   #         path: dastardly-report.xml
 
+ dastardly_scan:
+    runs-on: ubuntu-latest
 
-      - name: 'Dastardly Scan Action'
-          description: 'Runs a Dastardly scan against a target site'
-          author: 'PortSwigger'
-          inputs:
-            target-url:
-              description: 'The full url (including scheme) of the site to scan'
-              required: true
-            output-filename:
-              description: 'The filename used for the scan report. This filepath relates to the dastardly container, and will exist in the github workspace (/github/workspace)'
-              required: false
-              default: dastardly-report.xml
-          runs:
-            using: 'docker'
-            image: 'Dockerfile'
-            env:
-              BURP_START_URL: ${{ inputs.target-url }}
-              BURP_REPORT_FILE_PATH: /github/workspace/${{ inputs.output-filename }}
-          branding:
-            icon: 'activity'
-            color: 'green'
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Dastardly Scan Action
+        uses: ./index.html
+          target-url: http://localhost:12121
+          output-filename: dastardly-report.xml
+        env:
+          BURP_START_URL: http://localhost:12121
+          BURP_REPORT_FILE_PATH: /github/workspace/dastardly-report.xml
