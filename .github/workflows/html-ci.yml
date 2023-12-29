@@ -30,7 +30,7 @@ jobs:
           docker push ghcr.io/${{ github.repository_owner }}/my-html-app:latest
 
       - name: Trivy Scan
-        uses: aquasecurity/trivy-action@v5
+        uses: aquasecurity/trivy-action@master
         with:
           image: my-html-app:latest
           exit-code: 0  # Set to 1 to fail the workflow if vulnerabilities are found
