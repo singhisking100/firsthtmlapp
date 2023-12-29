@@ -44,10 +44,8 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Dastardly Scan Action
-        run: ./Dockerfile
-        with:
-          target-url: http://localhost:12121
-          output-filename: dastardly-report.xml
-        env:
-          BURP_START_URL: http://localhost:12121
-          BURP_REPORT_FILE_PATH: /github/workspace/dastardly-report.xml
+        run: |
+          docker build -t my-html-app .
+          docker run -v $(pwd):/target my-html-app:latest --target http://localhost:12121 --report /target/dastardly-report.xml
+
+    
