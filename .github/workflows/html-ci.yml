@@ -93,7 +93,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Dastardly Scan Action
-        uses: ./index.html
+        uses: ./Dockerfile
           target-url: http://localhost:12121
           output-filename: dastardly-report.xml
         env:
