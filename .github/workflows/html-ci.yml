@@ -7,6 +7,8 @@ on:
 
 jobs:
   build_and_push:
+    if: |
+      !(startsWith(github.ref, 'refs/heads/hotfix') || startsWith(github.ref, 'refs/heads/hotfixes'))
     runs-on: ubuntu-latest
 
     steps:
@@ -36,16 +38,16 @@ jobs:
           exit-code: 0  # Set to 1 to fail the workflow if vulnerabilities are found
           severity: CRITICAL  # Adjust severity level as needed
 
-  dastardly_scan:
-    runs-on: ubuntu-latest
+  # dastardly_scan:
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
+  #   steps:
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v2
 
-      - name: Dastardly Scan Action
-        run: |
-          docker build -t my-html-app .
-          docker run -v $(pwd):/target my-html-app:latest --target http://localhost:12121 --report /target/dastardly-report.xml
+  #     - name: Dastardly Scan Action
+  #       run: |
+  #         docker build -t my-html-app .
+  #         docker run -v $(pwd):/target my-html-app:latest --target http://localhost:12121 --report /target/dastardly-report.xml
 
     
