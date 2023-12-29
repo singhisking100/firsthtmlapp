@@ -1,4 +1,4 @@
-name: Build, Deploy, and Scan
+name: Build and Deploy
 
 on:
   push:
@@ -37,8 +37,13 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
 
-      - name: Pull Dastardly Docker Image
-        run: docker pull portswigger/dastardly:latest
-
       - name: Run Dastardly Scan
-        run: docker run -v ${{ github.workspace }}:/github/workspace portswigger/dastardly:latest --env BURP_START_URL=http://localhost:55555 --env BURP_REPORT_FILE_PATH=/github/workspace/dastardly-report.xml
+        run: |
+          docker pull portswigger/dastardly:latest
+          docker run -v $(pwd):/target portswigger/dastardly:latest --target http://localhost:55555 --report /target/dastardly-report.xml
+
+      - name: Upload Scan Report
+        uses: actions/upload-artifact@v2
+        with:
+          name: dastardly-report
+          path: dastardly-report.xml
