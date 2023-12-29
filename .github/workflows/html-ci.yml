@@ -50,7 +50,7 @@ jobs:
           severity-cutoff: critical
           only-fixed: true
           by-cve: true
-          
+
       - name: Inspect Anchore scan SARIF report
         run: cat ${{ steps.scan.outputs.sarif }}
 
@@ -67,7 +67,9 @@ jobs:
 
       - name: Run Dastardly Scan
         run: |
+          set -x
           docker run -v $(pwd):/target portswigger/dastardly:latest --target http://localhost:12121 --report /target/dastardly-report.xml
+          set +x
 
       - name: Upload Scan Report
         uses: actions/upload-artifact@v2
