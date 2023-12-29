@@ -34,7 +34,7 @@ jobs:
         with:
           image-ref: ghcr.io/${{ github.repository_owner }}/my-html-app:latest
           exit-code: 0  # Set to 1 to fail the workflow if vulnerabilities are found
-          severity: HIGH  # Adjust severity level as needed
+          severity: LOW  # Adjust severity level as needed
 
   anchore_scan:
     runs-on: ubuntu-latest
